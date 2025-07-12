@@ -28,7 +28,7 @@ async function handleSignOut(router: any) {
   }
 }
 
-export default function Header() {
+export default function Header({}: {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
   const router = useRouter();
