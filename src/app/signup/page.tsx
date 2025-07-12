@@ -68,6 +68,10 @@ export default function SignupPage() {
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" name="email" type="email" placeholder="m@example.com" required />
                         </div>
+                         <div className="grid gap-2">
+                            <Label htmlFor="phone">Phone Number</Label>
+                            <Input id="phone" name="phone" type="tel" placeholder="e.g., 01712345678" required />
+                        </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" required />

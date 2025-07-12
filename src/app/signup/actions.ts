@@ -8,6 +8,7 @@ import { z } from 'zod'
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   email: z.string().email('Invalid email address.'),
+  phone: z.string().min(10, 'Phone number must be at least 10 digits.'),
   password: z.string().min(6, 'Password must be at least 6 characters.'),
 })
 
@@ -39,6 +40,7 @@ export async function signup(prevState: SignupFormState, formData: FormData): Pr
   const validatedFields = signupSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
+    phone: formData.get('phone'),
     password: formData.get('password'),
   })
 
@@ -49,7 +51,7 @@ export async function signup(prevState: SignupFormState, formData: FormData): Pr
     }
   }
 
-  const { name, email, password } = validatedFields.data
+  const { name, email, phone, password } = validatedFields.data
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -57,6 +59,7 @@ export async function signup(prevState: SignupFormState, formData: FormData): Pr
     options: {
       data: {
         name: name,
+        phone: phone,
       },
     },
   })
