@@ -1,5 +1,16 @@
+
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 import {
   ArrowRight,
   Box,
@@ -10,8 +21,44 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 
 export default function Home() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  )
+
+  const sliderFeatures = [
+    {
+      icon: <Ship className="h-8 w-8 text-primary" />,
+      title: 'Post Your Trip & Earn',
+      description: 'Share your travel route and turn your extra luggage space into cash.',
+      image: 'https://placehold.co/1200x600.png',
+      imageHint: 'traveler journey'
+    },
+    {
+      icon: <Box className="h-8 w-8 text-primary" />,
+      title: 'Fast & Affordable Deliveries',
+      description: 'Get your items delivered faster and cheaper by a network of trusted travelers.',
+       image: 'https://placehold.co/1200x600.png',
+       imageHint: 'parcel delivery'
+    },
+    {
+      icon: <MapPin className="h-8 w-8 text-primary" />,
+      title: 'Track Your Parcel in Real-Time',
+      description: 'Always know where your parcel is with our live package tracking system.',
+       image: 'https://placehold.co/1200x600.png',
+       imageHint: 'map tracking'
+    },
+    {
+      icon: <Sparkles className="h-8 w-8 text-primary" />,
+      title: 'Smart AI-Powered Meetings',
+      description: 'Our smart assistant suggests the most convenient and efficient meeting points.',
+       image: 'https://placehold.co/1200x600.png',
+       imageHint: 'ai assistant'
+    },
+  ];
+
   const features = [
     {
       icon: <Ship className="h-8 w-8 text-primary" />,
@@ -66,29 +113,58 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative bg-accent py-20 md:py-32">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-foreground mb-4">
-              Ship Smarter, Travel Further
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              delibro connects travelers with individuals who need to send
-              parcels. Turn your extra luggage space into cash or get your
-              items delivered with speed and care.
-            </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Button asChild size="lg" className="font-semibold">
-                <Link href="/send-parcel">
-                  Send a Parcel <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="font-semibold">
-                <Link href="/post-trip">
-                  Become a Traveler
-                </Link>
-              </Button>
-            </div>
-          </div>
+        <section className="relative bg-accent/50 w-full overflow-hidden">
+           <Carousel
+              plugins={[plugin.current]}
+              className="w-full"
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+            >
+              <CarouselContent>
+                {sliderFeatures.map((feature, index) => (
+                  <CarouselItem key={index}>
+                    <div className="pt-12 pb-12 md:pt-24 md:pb-24">
+                      <div className="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+                          <div className="text-center md:text-left">
+                              <div className="mb-4 inline-block bg-primary/10 p-3 rounded-xl">
+                                {feature.icon}
+                              </div>
+                              <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground mb-4">
+                                  {feature.title}
+                              </h1>
+                              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-8">
+                                  {feature.description}
+                              </p>
+                              <div className="flex justify-center md:justify-start gap-4 flex-wrap">
+                                  <Button asChild size="lg" className="font-semibold">
+                                  <Link href="/send-parcel">
+                                      Send a Parcel <ArrowRight className="ml-2 h-5 w-5" />
+                                  </Link>
+                                  </Button>
+                                  <Button asChild size="lg" variant="outline" className="font-semibold">
+                                  <Link href="/post-trip">
+                                      Become a Traveler
+                                  </Link>
+                                  </Button>
+                              </div>
+                          </div>
+                          <div className="relative h-64 md:h-96">
+                               <Image
+                                src={feature.image}
+                                alt={feature.title}
+                                fill
+                                className="rounded-lg shadow-xl object-cover"
+                                data-ai-hint={feature.imageHint}
+                                />
+                          </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex" />
+              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex" />
+            </Carousel>
         </section>
 
         {/* How It Works Section */}
