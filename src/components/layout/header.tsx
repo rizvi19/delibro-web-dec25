@@ -81,7 +81,7 @@ export default function Header({}) {
         className={cn(
           'nav-link-glass',
           isActive && 'active',
-          isBrand && '!bg-transparent !shadow-none',
+          isBrand && '!bg-transparent !shadow-none !border-none',
           className
         )}
         onClick={() => setMobileMenuOpen(false)}
