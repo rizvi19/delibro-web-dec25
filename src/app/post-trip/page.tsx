@@ -22,9 +22,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useFormState, useFormStatus } from 'react-dom';
-import { postTripAction } from './actions';
+import { postTripAction, type TripFormState } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect, useRef } from 'react';
+import { z } from 'zod';
+
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -41,7 +43,7 @@ export default function PostTripPage() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   
-  const initialState = {
+  const initialState: TripFormState = {
     success: false,
     message: '',
     errors: null,

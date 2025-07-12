@@ -4,7 +4,9 @@ import { supabase } from '@/lib/supabase/client';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 
-export const tripSchema = z.object({
+// This is the same schema as in the page.tsx file.
+// It's duplicated here to validate on the server.
+const tripSchema = z.object({
   origin: z.string().min(1, 'Origin is required.'),
   destination: z.string().min(1, 'Destination is required.'),
   travelDate: z.string().min(1, 'Travel date is required.'),
