@@ -29,7 +29,6 @@ async function handleSignOut(router: any) {
 }
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
   const router = useRouter();
@@ -56,26 +55,20 @@ export default function Header() {
 
   }, []);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const pathname = usePathname();
 
   const NavLink = ({
     href,
     children,
-    className
+    className,
+    isBrand = false,
   }: {
     href: string;
     children: React.ReactNode;
     className?: string;
+    isBrand?: boolean;
   }) => {
-    const isActive = pathname === href;
+    const isActive = !isBrand && pathname === href;
     return (
       <Link
         href={href}
@@ -119,15 +112,14 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'backdrop-blur-sm border-b' : 'bg-transparent'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="nav-link-glass font-bold flex items-center gap-2">
+        <NavLink href="/" className="font-bold flex items-center gap-2" isBrand>
           <Send className="h-6 w-6 text-primary" />
           <span className="font-headline">delibro</span>
-        </Link>
+        </NavLink>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2 p-1">
