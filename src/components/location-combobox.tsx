@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Input } from "./ui/input"
 
 const districts = [
     { value: "bagerhat", label: "Bagerhat" },
@@ -87,11 +88,13 @@ const districts = [
     { value: "thakurgaon", label: "Thakurgaon" },
 ];
 
-export function LocationCombobox() {
+export function LocationCombobox({ name }: { name: string }) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
   return (
+    <>
+    <Input type="hidden" name={name} value={value} />
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -135,5 +138,6 @@ export function LocationCombobox() {
         </Command>
       </PopoverContent>
     </Popover>
+    </>
   )
 }
