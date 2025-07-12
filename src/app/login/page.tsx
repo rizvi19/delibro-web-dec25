@@ -45,7 +45,8 @@ export default function LoginPage() {
                 title: "Success!",
                 description: state.message,
             });
-            router.push('/');
+            // The header's onAuthStateChange will handle redirection
+            // router.push('/'); 
         }
     }, [state, toast, router]);
 

@@ -3,13 +3,15 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Ship, Send, PackageSearch, Sparkles, Home as HomeIcon, LogOut } from 'lucide-react';
+import { Menu, Ship, Send, PackageSearch, Sparkles, Home as HomeIcon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { createSupabaseClient } from '@/lib/supabase/client';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 
 async function handleSignOut(router: any) {
@@ -17,13 +19,13 @@ async function handleSignOut(router: any) {
   const { error } = await supabase.auth.signOut();
   if (!error) {
     // This will trigger onAuthStateChange and update the UI
-    router.refresh(); 
+    router.push('/login'); 
   } else {
     console.error('Sign out error:', error);
   }
 }
 
-export default function Header() {
+export default function Header({}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
@@ -35,8 +37,15 @@ export default function Header() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
-        router.refresh();
+      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+         if(pathname.startsWith('/login') || pathname.startsWith('/signup')) {
+            router.push('/');
+        } else {
+            router.refresh();
+        }
+      }
+      if (event === 'SIGNED_OUT') {
+        router.push('/login');
       }
     });
 
@@ -51,7 +60,7 @@ export default function Header() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, supabase]);
+  }, [router, supabase, pathname]);
 
 
   const NavLink = ({
@@ -72,6 +81,7 @@ export default function Header() {
         className={cn(
           'nav-link-glass',
           isActive && 'active',
+          isBrand && '!bg-transparent !shadow-none',
           className
         )}
         onClick={() => setMobileMenuOpen(false)}
@@ -106,6 +116,8 @@ export default function Header() {
     );
   };
 
+  const userInitial = user?.user_metadata?.name?.[0] || user?.email?.[0] || '?';
+
   return (
     <header
       className={cn(
@@ -129,13 +141,44 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-2">
             {user ? (
-                <>
-                    <span className="text-sm nav-link-glass">Welcome, {user.user_metadata?.name || user.email}</span>
-                    <Button variant="ghost" className="nav-link-glass" onClick={() => handleSignOut(router)}>
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
+                        <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
+                      </Avatar>
                     </Button>
-                </>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">{user.user_metadata?.name}</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild disabled>
+                       <Link href="/profile">
+                        <UserIcon className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => handleSignOut(router)}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
             ) : (
                 <>
                     <Button variant="ghost" asChild className="nav-link-glass">
@@ -177,10 +220,22 @@ export default function Header() {
                 <div className="mt-auto p-4 border-t">
                   <div className="flex flex-col gap-2">
                      {user ? (
-                        <Button variant="outline" onClick={() => { handleSignOut(router); setMobileMenuOpen(false); }}>
-                            <LogOut className="mr-2 h-4 w-4" />
-                            Sign Out
-                        </Button>
+                        <>
+                          <div className="flex items-center gap-4 p-2 mb-2">
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
+                              <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="text-sm font-medium leading-none">{user.user_metadata?.name}</p>
+                              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                            </div>
+                          </div>
+                          <Button variant="outline" onClick={() => { handleSignOut(router); setMobileMenuOpen(false); }}>
+                              <LogOut className="mr-2 h-4 w-4" />
+                              Sign Out
+                          </Button>
+                        </>
                     ) : (
                         <>
                             <Button variant="outline" asChild>
