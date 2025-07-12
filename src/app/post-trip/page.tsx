@@ -1,9 +1,11 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Ship } from 'lucide-react';
+import { LocationCombobox } from '@/components/location-combobox';
 
 export default function PostTripPage() {
   return (
@@ -22,11 +24,11 @@ export default function PostTripPage() {
             <div className="grid md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
                     <Label htmlFor="origin">From</Label>
-                    <Input id="origin" placeholder="e.g., Dhaka" required />
+                    <LocationCombobox />
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="destination">To</Label>
-                    <Input id="destination" placeholder="e.g., Rajshahi" required />
+                    <LocationCombobox />
                 </div>
             </div>
             <div className="grid gap-2">
