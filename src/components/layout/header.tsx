@@ -68,9 +68,11 @@ export default function Header() {
   const NavLink = ({
     href,
     children,
+    className
   }: {
     href: string;
     children: React.ReactNode;
+    className?: string;
   }) => {
     const isActive = pathname === href;
     return (
@@ -78,7 +80,8 @@ export default function Header() {
         href={href}
         className={cn(
           'nav-link-glass',
-          isActive && 'active'
+          isActive && 'active',
+          className
         )}
         onClick={() => setMobileMenuOpen(false)}
       >
@@ -116,17 +119,17 @@ export default function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'bg-card/80 backdrop-blur-sm border-b' : 'bg-transparent'
+        isScrolled ? 'backdrop-blur-sm border-b' : 'bg-transparent'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+        <NavLink href="/" className="font-bold flex items-center gap-2">
           <Send className="h-6 w-6 text-primary" />
           <span className="font-headline">delibro</span>
-        </Link>
+        </NavLink>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2 p-1 rounded-full bg-black/5 border border-white/10 shadow-md">
+        <nav className="hidden md:flex items-center gap-2 p-1">
           {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>
               {link.label}
@@ -137,18 +140,18 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-2">
             {user ? (
                 <>
-                    <span className="text-sm text-muted-foreground hidden lg:block">Welcome, {user.user_metadata?.name || user.email}</span>
-                    <Button variant="ghost" onClick={() => handleSignOut(router)}>
+                    <span className="text-sm nav-link-glass">Welcome, {user.user_metadata?.name || user.email}</span>
+                    <Button variant="ghost" className="nav-link-glass" onClick={() => handleSignOut(router)}>
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign Out
                     </Button>
                 </>
             ) : (
                 <>
-                    <Button variant="ghost" asChild>
+                    <Button variant="ghost" asChild className="nav-link-glass">
                         <Link href="/login">Sign In</Link>
                     </Button>
-                    <Button asChild>
+                    <Button asChild className="nav-link-glass">
                         <Link href="/signup">Sign Up</Link>
                     </Button>
                 </>
