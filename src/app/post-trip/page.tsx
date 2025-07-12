@@ -1,4 +1,5 @@
 
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Ship } from 'lucide-react';
 import { LocationCombobox } from '@/components/location-combobox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function PostTripPage() {
   return (
@@ -31,9 +33,35 @@ export default function PostTripPage() {
                     <LocationCombobox />
                 </div>
             </div>
-            <div className="grid gap-2">
-                <Label htmlFor="date">Date of Travel</Label>
-                <Input id="date" type="date" required />
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                    <Label htmlFor="date">Date of Travel</Label>
+                    <Input id="date" type="date" required />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="time">Departure Time</Label>
+                    <Input id="time" type="time" required />
+                </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+                 <div className="grid gap-2">
+                    <Label htmlFor="transport-mode">Mode of Transport</Label>
+                    <Select>
+                        <SelectTrigger id="transport-mode">
+                            <SelectValue placeholder="Select a mode" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="bus">Bus</SelectItem>
+                            <SelectItem value="train">Train</SelectItem>
+                            <SelectItem value="plane">Plane</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="seat">Seat/Ticket Number</Label>
+                    <Input id="seat" placeholder="e.g., A1, CNB 12" />
+                </div>
             </div>
             <div className="grid gap-2">
                 <Label htmlFor="capacity">Available Capacity</Label>
