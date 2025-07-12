@@ -21,11 +21,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useFormState, useFormStatus } from 'react-dom';
-import { postTripAction, type TripFormState } from './actions';
+import { useFormStatus } from 'react-dom';
+import { postTripAction } from './actions';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useActionState } from 'react';
 import { z } from 'zod';
+
+// This schema is used for client-side validation and type inference.
+const tripSchema = z.object({
+  origin: z.string().min(1, 'Origin is required.'),
+  destination: z.string().min(1, 'Destination is required.'),
+  travelDate: z.string().min(1, 'Travel date is required.'),
+  departureTime: z.string().min(1, 'Departure time is required.'),
+  transportMode: z.enum(['bus', 'train', 'plane', 'other']),
+  seatInfo: z.string().optional(),
+  availableCapacity: z.string().min(1, 'Available capacity is required.'),
+  notes: z.string().optional(),
+});
+
+export type TripFormState = {
+  success: boolean;
+  message: string;
+  errors?: {
+    [key: string]: string[];
+  } | null;
+};
 
 
 function SubmitButton() {
@@ -49,7 +69,7 @@ export default function PostTripPage() {
     errors: null,
   };
 
-  const [state, formAction] = useFormState(postTripAction, initialState);
+  const [state, formAction] = useActionState(postTripAction, initialState);
 
   useEffect(() => {
     if (state.message) {
