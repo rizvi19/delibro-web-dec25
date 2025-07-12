@@ -41,8 +41,8 @@ export default function Header() {
       <Link
         href={href}
         className={cn(
-          'text-sm font-medium transition-colors hover:text-primary',
-          isActive ? 'text-primary' : 'text-muted-foreground'
+          'nav-link-glass',
+          isActive && 'active'
         )}
         onClick={() => setMobileMenuOpen(false)}
       >
@@ -90,7 +90,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-2 p-1 rounded-full bg-black/5 border border-white/10 shadow-md">
           {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>
               {link.label}

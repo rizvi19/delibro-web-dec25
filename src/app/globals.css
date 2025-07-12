@@ -86,3 +86,24 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .nav-link-glass {
+    @apply relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-foreground backdrop-blur-sm transition-all duration-300;
+  }
+  .nav-link-glass::before {
+    content: '';
+    @apply absolute -top-1/2 -left-1/2 h-[200%] w-[200%] bg-gradient-to-br from-white/30 via-white/10 to-transparent;
+    transform: rotate(45deg);
+    transition: transform 0.5s ease;
+  }
+  .nav-link-glass:hover::before {
+    transform: translate(10%, 10%) rotate(45deg);
+  }
+  .nav-link-glass.active {
+     @apply bg-primary/20 text-primary shadow-inner shadow-primary/30;
+  }
+   .nav-link-glass.active::before {
+    @apply bg-gradient-to-br from-white/50 via-white/20 to-transparent;
+   }
+}
