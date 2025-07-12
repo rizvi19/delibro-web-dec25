@@ -72,7 +72,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative bg-accent/50 w-full overflow-hidden">
             <div className="container mx-auto px-4 py-20 md:py-32">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="grid md:grid-cols-1 gap-8 items-center">
                     <div className="text-center md:text-left">
                         <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-foreground mb-4">
                             Ship Smarter, Travel Further
@@ -92,15 +92,6 @@ export default function Home() {
                             </Link>
                             </Button>
                         </div>
-                    </div>
-                    <div className="relative h-64 md:h-96">
-                         <Image
-                          src="https://placehold.co/1200x600.png"
-                          alt="Parcel delivery illustration"
-                          fill
-                          className="rounded-lg shadow-xl object-cover"
-                          data-ai-hint="parcel delivery journey"
-                          />
                     </div>
                 </div>
             </div>
