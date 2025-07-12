@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -123,10 +124,10 @@ export default function Header() {
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <NavLink href="/" className="font-bold flex items-center gap-2">
+        <Link href="/" className="nav-link-glass font-bold flex items-center gap-2">
           <Send className="h-6 w-6 text-primary" />
           <span className="font-headline">delibro</span>
-        </NavLink>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2 p-1">
