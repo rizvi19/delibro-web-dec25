@@ -43,6 +43,7 @@ export default async function DashboardPage() {
     if (tripsError || parcelsError) {
         console.error('Error fetching dashboard data:', tripsError || parcelsError);
         // You might want to show an error message to the user
+        
     }
 
     return (

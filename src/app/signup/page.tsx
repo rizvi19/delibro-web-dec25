@@ -45,7 +45,7 @@ export default function SignupPage() {
                 title: "Success!",
                 description: state.message,
             });
-            router.push('/dashboard');
+            router.push('/');
         }
     }, [state, toast, router]);
 
