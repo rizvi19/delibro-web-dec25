@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Ship, Send, PackageSearch, Sparkles } from 'lucide-react';
+import { Menu, Ship, Send, PackageSearch, Sparkles, Home as HomeIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import React from 'react';
 
 const navLinks = [
+  { href: '/', label: 'Home', icon: HomeIcon },
   { href: '/post-trip', label: 'Post a Trip', icon: Ship },
   { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
   { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
