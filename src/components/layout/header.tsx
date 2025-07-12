@@ -7,55 +7,52 @@ import { Menu, Ship, Send, PackageSearch, Sparkles, Home as HomeIcon, LogOut } f
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import React from 'react';
-import { createClient } from '@supabase/supabase-js'
+import React, { useEffect, useState } from 'react';
+import type { User } from '@supabase/supabase-js';
+import { createSupabaseClient } from '@/lib/supabase/client';
 
-const navLinks = [
-  { href: '/', label: 'Home', icon: HomeIcon },
-  { href: '/post-trip', label: 'Post a Trip', icon: Ship },
-  { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
-  { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
-  { href: '/ai-assistant', label: 'AI Assistant', icon: Sparkles },
-];
 
 async function handleSignOut(router: any) {
-  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const supabase = createSupabaseClient();
   const { error } = await supabase.auth.signOut();
   if (!error) {
-    router.push('/login');
+    // This will trigger onAuthStateChange and update the UI
+    router.refresh(); 
   } else {
     console.error('Sign out error:', error);
   }
 }
 
-export default function Header({}: {}) {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [user, setUser] = React.useState<any>(null);
+export default function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const supabase = createSupabaseClient();
 
-  React.useEffect(() => {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
+        router.refresh();
+      }
+    });
 
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+    const getInitialUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
     }
     
-    getUser();
+    getInitialUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
 
     return () => {
-      authListener?.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
+  }, [router, supabase]);
 
-  }, []);
-
-  const pathname = usePathname();
 
   const NavLink = ({
     href,
@@ -160,7 +157,7 @@ export default function Header({}: {}) {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent side="right" className="p-0">
               <div className="flex flex-col h-full">
                 <div className="border-b p-4">
                   <Link
@@ -204,3 +201,11 @@ export default function Header({}: {}) {
     </header>
   );
 }
+
+const navLinks = [
+  { href: '/', label: 'Home', icon: HomeIcon },
+  { href: '/post-trip', label: 'Post a Trip', icon: Ship },
+  { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
+  { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
+  { href: '/ai-assistant', label: 'AI Assistant', icon: Sparkles },
+];
