@@ -5,20 +5,16 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
-// This is the same schema as in the page.tsx file.
-// It's duplicated here to validate on the server.
-const tripSchema = z.object({
+const parcelSchema = z.object({
   origin: z.string().min(1, 'Origin is required.'),
   destination: z.string().min(1, 'Destination is required.'),
-  travelDate: z.string().min(1, 'Travel date is required.'),
-  departureTime: z.string().min(1, 'Departure time is required.'),
-  transportMode: z.enum(['bus', 'train', 'plane', 'other']),
-  seatInfo: z.string().optional(),
-  availableCapacity: z.string().min(1, 'Available capacity is required.'),
+  parcelDetails: z.string().min(1, 'Parcel details are required.'),
+  parcelWeight: z.string().min(1, 'Parcel weight is required.'),
+  deliveryDate: z.string().min(1, 'Desired delivery date is required.'),
   notes: z.string().optional(),
 });
 
-export type TripFormState = {
+export type ParcelFormState = {
   success: boolean;
   message: string;
   errors?: {
@@ -26,12 +22,12 @@ export type TripFormState = {
   } | null;
 };
 
-export async function postTripAction(
-  prevState: TripFormState,
+export async function sendParcelAction(
+  prevState: ParcelFormState,
   formData: FormData
-): Promise<TripFormState> {
-  const cookieStore = cookies();
-  const supabase = createServerClient(
+): Promise<ParcelFormState> {
+   const cookieStore = cookies();
+   const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
@@ -43,27 +39,24 @@ export async function postTripAction(
       }
     );
 
-    const {
+  const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
     return {
       success: false,
-      message: 'You must be logged in to post a trip.',
+      message: 'You must be logged in to send a parcel.',
       errors: null,
     };
   }
 
-
-  const validatedFields = tripSchema.safeParse({
+  const validatedFields = parcelSchema.safeParse({
     origin: formData.get('origin'),
     destination: formData.get('destination'),
-    travelDate: formData.get('travelDate'),
-    departureTime: formData.get('departureTime'),
-    transportMode: formData.get('transportMode'),
-    seatInfo: formData.get('seatInfo'),
-    availableCapacity: formData.get('availableCapacity'),
+    parcelDetails: formData.get('parcelDetails'),
+    parcelWeight: formData.get('parcelWeight'),
+    deliveryDate: formData.get('deliveryDate'),
     notes: formData.get('notes'),
   });
 
@@ -75,15 +68,13 @@ export async function postTripAction(
     };
   }
 
-  const { data, error } = await supabase.from('trips').insert([
+  const { data, error } = await supabase.from('parcels').insert([
     {
       origin: validatedFields.data.origin,
       destination: validatedFields.data.destination,
-      travel_date: validatedFields.data.travelDate,
-      departure_time: validatedFields.data.departureTime,
-      transport_mode: validatedFields.data.transportMode,
-      seat_info: validatedFields.data.seatInfo,
-      available_capacity: validatedFields.data.availableCapacity,
+      details: validatedFields.data.parcelDetails,
+      weight_kg: parseFloat(validatedFields.data.parcelWeight),
+      desired_delivery_date: validatedFields.data.deliveryDate,
       notes: validatedFields.data.notes,
       user_id: user.id,
     },
@@ -93,15 +84,15 @@ export async function postTripAction(
     console.error('Supabase error:', error);
     return {
       success: false,
-      message: 'Failed to post trip. Please try again.',
+      message: 'Failed to post parcel request. Please try again.',
       errors: null,
     };
   }
 
-  revalidatePath('/dashboard'); 
+  revalidatePath('/dashboard');
   return {
     success: true,
-    message: 'Trip posted successfully!',
+    message: 'Parcel request posted successfully!',
     errors: null,
   };
 }
