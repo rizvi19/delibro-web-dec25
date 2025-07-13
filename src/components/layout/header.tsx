@@ -25,7 +25,7 @@ async function handleSignOut(router: any) {
   }
 }
 
-export default function Header({}) {
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -155,7 +155,7 @@ export default function Header({}) {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
+                        <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email || ''} />
                         <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
                       </Avatar>
                     </Button>
@@ -241,7 +241,7 @@ export default function Header({}) {
                         <>
                           <div className="flex items-center gap-4 p-2 mb-2">
                             <Avatar className="h-10 w-10">
-                              <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email} />
+                              <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email || ''} />
                               <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div>
@@ -249,6 +249,9 @@ export default function Header({}) {
                               <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                             </div>
                           </div>
+                          <MobileNavLink href="/dashboard" label="Dashboard" icon={LayoutDashboard} />
+                           <MobileNavLink href="/profile" label="Profile" icon={UserIcon} />
+
                           <Button variant="outline" onClick={() => { handleSignOut(router); setMobileMenuOpen(false); }}>
                               <LogOut className="mr-2 h-4 w-4" />
                               Sign Out
