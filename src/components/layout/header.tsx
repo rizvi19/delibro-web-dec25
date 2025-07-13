@@ -25,7 +25,7 @@ async function handleSignOut(router: any) {
   }
 }
 
-export default function Header({}) {
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
@@ -33,11 +33,18 @@ export default function Header({}) {
   const supabase = createSupabaseClient();
 
   useEffect(() => {
+    const getInitialUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+    }
+    
+    getInitialUser();
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+      if (event === 'SIGNED_IN') {
          if(pathname.startsWith('/login') || pathname.startsWith('/signup')) {
             router.push('/');
         } else {
@@ -48,13 +55,6 @@ export default function Header({}) {
         router.push('/login');
       }
     });
-
-    const getInitialUser = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-    }
-    
-    getInitialUser();
 
 
     return () => {
@@ -81,7 +81,7 @@ export default function Header({}) {
         className={cn(
           'nav-link-glass',
           isActive && 'active',
-          isBrand && '!bg-transparent !shadow-none !border-none',
+          isBrand && '!bg-transparent !shadow-none !border-none !text-foreground',
           className
         )}
         onClick={() => setMobileMenuOpen(false)}
