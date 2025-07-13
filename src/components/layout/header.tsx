@@ -12,30 +12,37 @@ import type { User } from '@supabase/supabase-js';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '../ui/skeleton';
 
 
 async function handleSignOut(router: any) {
   const supabase = createSupabaseClient();
   const { error } = await supabase.auth.signOut();
   if (!error) {
-    // This will trigger onAuthStateChange and update the UI
     router.push('/login'); 
   } else {
     console.error('Sign out error:', error);
   }
 }
 
-export default function Header() {
+export default function Header({}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
   const supabase = createSupabaseClient();
 
   useEffect(() => {
     const getInitialUser = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        } catch (e) {
+            console.error("Error fetching user", e)
+        } finally {
+            setLoading(false);
+        }
     }
     
     getInitialUser();
@@ -44,6 +51,7 @@ export default function Header() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      setLoading(false);
       if (event === 'SIGNED_IN') {
          if(pathname.startsWith('/login') || pathname.startsWith('/signup')) {
             router.push('/');
@@ -140,7 +148,9 @@ export default function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
-            {user ? (
+            {loading ? (
+                 <Skeleton className="h-10 w-24 rounded-full" />
+            ) : user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -219,7 +229,15 @@ export default function Header() {
                 </nav>
                 <div className="mt-auto p-4 border-t">
                   <div className="flex flex-col gap-2">
-                     {user ? (
+                     {loading ? (
+                         <div className="flex items-center gap-4 p-2 mb-2">
+                            <Skeleton className="h-10 w-10 rounded-full" />
+                            <div className="space-y-2">
+                                <Skeleton className="h-4 w-[150px]" />
+                                <Skeleton className="h-3 w-[120px]" />
+                            </div>
+                         </div>
+                     ) : user ? (
                         <>
                           <div className="flex items-center gap-4 p-2 mb-2">
                             <Avatar className="h-10 w-10">
