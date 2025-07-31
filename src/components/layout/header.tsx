@@ -87,9 +87,9 @@ export default function Header() {
       <Link
         href={href}
         className={cn(
-          'nav-link-glass',
+          !isBrand && 'nav-link',
           isActive && 'active',
-          isBrand && '!bg-transparent !shadow-none !border-none !text-foreground',
+          isBrand && 'flex items-center gap-2 font-bold',
           className
         )}
         onClick={() => setMobileMenuOpen(false)}
@@ -129,11 +129,11 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background/95 backdrop-blur-sm shadow-sm'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <NavLink href="/" className="font-bold flex items-center gap-2" isBrand>
+        <NavLink href="/" className="text-lg" isBrand>
           <Send className="h-6 w-6 text-primary" />
           <span className="font-headline">delibro</span>
         </NavLink>
@@ -147,9 +147,12 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="flex items-center gap-2">
             {loading ? (
-                 <Skeleton className="h-10 w-24 rounded-full" />
+                <div className='hidden md:flex items-center gap-2'>
+                    <Skeleton className="h-8 w-20 rounded-md" />
+                    <Skeleton className="h-8 w-20 rounded-md" />
+                </div>
             ) : user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -190,88 +193,88 @@ export default function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
             ) : (
-                <>
-                    <Button variant="ghost" asChild className="nav-link-glass">
+                <div className='hidden md:flex items-center gap-2'>
+                    <Button variant="ghost" asChild>
                         <Link href="/login">Sign In</Link>
                     </Button>
-                    <Button asChild className="nav-link-glass">
+                    <Button asChild>
                         <Link href="/signup">Sign Up</Link>
                     </Button>
-                </>
+                </div>
             )}
-        </div>
+        
+            {/* Mobile Navigation */}
+            <div className="md:hidden">
+              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle Menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="p-0">
+                  <div className="flex flex-col h-full">
+                    <div className="border-b p-4">
+                      <Link
+                        href="/"
+                        className="flex items-center gap-2 font-bold text-lg"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Send className="h-6 w-6 text-primary" />
+                        <span className="font-headline">delibro</span>
+                      </Link>
+                    </div>
+                    <nav className="flex-grow grid gap-2 text-lg font-medium p-4">
+                      {navLinks.map((link) => (
+                        <MobileNavLink key={link.href} {...link} />
+                      ))}
+                    </nav>
+                    <div className="mt-auto p-4 border-t">
+                      <div className="flex flex-col gap-2">
+                         {loading ? (
+                             <div className="flex items-center gap-4 p-2 mb-2">
+                                <Skeleton className="h-10 w-10 rounded-full" />
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-[150px]" />
+                                    <Skeleton className="h-3 w-[120px]" />
+                                </div>
+                             </div>
+                         ) : user ? (
+                            <>
+                              <div className="flex items-center gap-4 p-2 mb-2">
+                                <Avatar className="h-10 w-10">
+                                  <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email || ''} />
+                                  <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <p className="text-sm font-medium leading-none">{user.user_metadata?.name}</p>
+                                  <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                                </div>
+                              </div>
+                              <MobileNavLink href="/dashboard" label="Dashboard" icon={LayoutDashboard} />
+                               <MobileNavLink href="/profile" label="Profile" icon={UserIcon} />
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="p-0">
-              <div className="flex flex-col h-full">
-                <div className="border-b p-4">
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2 font-bold text-lg"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Send className="h-6 w-6 text-primary" />
-                    <span className="font-headline">delibro</span>
-                  </Link>
-                </div>
-                <nav className="flex-grow grid gap-2 text-lg font-medium p-4">
-                  {navLinks.map((link) => (
-                    <MobileNavLink key={link.href} {...link} />
-                  ))}
-                </nav>
-                <div className="mt-auto p-4 border-t">
-                  <div className="flex flex-col gap-2">
-                     {loading ? (
-                         <div className="flex items-center gap-4 p-2 mb-2">
-                            <Skeleton className="h-10 w-10 rounded-full" />
-                            <div className="space-y-2">
-                                <Skeleton className="h-4 w-[150px]" />
-                                <Skeleton className="h-3 w-[120px]" />
-                            </div>
-                         </div>
-                     ) : user ? (
-                        <>
-                          <div className="flex items-center gap-4 p-2 mb-2">
-                            <Avatar className="h-10 w-10">
-                              <AvatarImage src={user.user_metadata?.avatar_url} alt={user.user_metadata?.name || user.email || ''} />
-                              <AvatarFallback className='bg-primary text-primary-foreground'>{userInitial.toUpperCase()}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="text-sm font-medium leading-none">{user.user_metadata?.name}</p>
-                              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                            </div>
-                          </div>
-                          <MobileNavLink href="/dashboard" label="Dashboard" icon={LayoutDashboard} />
-                           <MobileNavLink href="/profile" label="Profile" icon={UserIcon} />
-
-                          <Button variant="outline" onClick={() => { handleSignOut(router); setMobileMenuOpen(false); }}>
-                              <LogOut className="mr-2 h-4 w-4" />
-                              Sign Out
-                          </Button>
-                        </>
-                    ) : (
-                        <>
-                            <Button variant="outline" asChild>
-                            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
-                            </Button>
-                            <Button asChild>
-                            <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
-                            </Button>
-                        </>
-                    )}
+                              <Button variant="outline" onClick={() => { handleSignOut(router); setMobileMenuOpen(false); }}>
+                                  <LogOut className="mr-2 h-4 w-4" />
+                                  Sign Out
+                              </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button variant="outline" asChild>
+                                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                                </Button>
+                                <Button asChild>
+                                <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+                                </Button>
+                            </>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
         </div>
       </div>
     </header>
