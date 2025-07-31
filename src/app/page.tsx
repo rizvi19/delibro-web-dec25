@@ -74,7 +74,7 @@ export default function Home() {
             <div className="container mx-auto px-4 py-20 md:py-32">
                 <div className="grid md:grid-cols-1 gap-8 items-center">
                     <div className="text-center md:text-left">
-                        <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-foreground mb-4">
+                        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground mb-4">
                             Ship Smarter, Travel Further
                         </h1>
                         <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-8">
