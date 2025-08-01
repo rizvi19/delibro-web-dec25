@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Ship, Send, PackageSearch, Sparkles, Home as HomeIcon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
+import { Menu, Ship, Send, PackageSearch, Home as HomeIcon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -129,7 +129,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background/95 backdrop-blur-sm shadow-sm'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background shadow-sm'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -149,9 +149,12 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
             {loading ? (
-                <div className='hidden md:flex items-center gap-2'>
-                    <Skeleton className="h-8 w-20 rounded-md" />
-                    <Skeleton className="h-8 w-20 rounded-md" />
+                <div className='flex items-center gap-4'>
+                    <div className='hidden md:flex items-center gap-2'>
+                        <Skeleton className="h-8 w-20 rounded-md" />
+                        <Skeleton className="h-8 w-20 rounded-md" />
+                    </div>
+                    <Skeleton className="h-10 w-10 rounded-full md:hidden" />
                 </div>
             ) : user ? (
                 <DropdownMenu>
@@ -286,5 +289,4 @@ const navLinks = [
   { href: '/post-trip', label: 'Post a Trip', icon: Ship },
   { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
   { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
-  { href: '/ai-assistant', label: 'AI Assistant', icon: Sparkles },
 ];

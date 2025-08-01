@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
+import HelplineChat from '@/components/helpline-chat';
 
 export const metadata: Metadata = {
   title: 'delibro',
@@ -31,6 +32,7 @@ export default function RootLayout({
         <Header />
         <main className="min-h-screen bg-background pt-16">{children}</main>
         <Toaster />
+        <HelplineChat />
       </body>
     </html>
   );
