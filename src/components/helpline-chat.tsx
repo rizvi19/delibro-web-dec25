@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Bot, Send, X, Loader2, Sparkles, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { askHelpline } from '@/app/actions';
-import Image from 'next/image';
 
 type Message = {
   role: 'user' | 'bot';
@@ -119,7 +118,7 @@ export default function HelplineChat() {
                     })}
                   >
                     <p className="text-sm">{cleanContent}</p>
-                     {showLogo && <Image src="/logo.png" alt="delibro logo" width={80} height={20} className="mt-2" />}
+                     {showLogo && <img src="/logo.png" alt="delibro logo" className="mt-2 h-[20px] w-auto" />}
                   </div>
                    {message.role === 'user' && (
                     <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
@@ -160,5 +159,3 @@ export default function HelplineChat() {
     </>
   );
 }
-
-    

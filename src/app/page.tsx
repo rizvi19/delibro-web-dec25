@@ -77,7 +77,7 @@ export default function Home() {
                             Ship Smarter, Travel Further
                         </h1>
                         <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-8">
-                           <Image src="/logo.png" alt="delibro logo" width={100} height={25} className="inline-block mr-2 -mt-1"/> connects travelers with individuals who need to send parcels. Turn your extra luggage space into cash or get your items delivered with speed and care.
+                           <img src="/logo.png" alt="delibro logo" className="inline-block mr-2 -mt-1 h-[25px] w-auto"/> connects travelers with individuals who need to send parcels. Turn your extra luggage space into cash or get your items delivered with speed and care.
                         </p>
                         <div className="flex justify-center md:justify-start gap-4 flex-wrap">
                             <Button asChild size="lg" className="font-semibold">
@@ -85,7 +85,7 @@ export default function Home() {
                                 Send a Parcel <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
                             </Button>
-                            <Button asChild size="lg" variant="outline" className="font-semibold">
+                            <Button asChild size="lg" variant="outline" className="font-semibold border border-primary">
                             <Link href="/post-trip">
                                 Become a Traveler
                             </Link>
@@ -130,7 +130,7 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center justify-center gap-2">
-                Why Choose <Image src="/logo.png" alt="delibro logo" width={140} height={35} />?
+                Why Choose <img src="/logo.png" alt="delibro logo" className="h-[35px] w-auto" />?
               </h2>
               <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
                 We provide features that make your life easier and your
@@ -173,7 +173,7 @@ export default function Home() {
                   Your Trust, Our Priority
                 </h2>
                 <p className="text-muted-foreground text-lg mb-6">
-                  We are committed to making <Image src="/logo.png" alt="delibro logo" width={100} height={25} className="inline-block -mt-1" /> a safe and reliable
+                  We are committed to making <img src="/logo.png" alt="delibro logo" className="inline-block -mt-1 h-[25px] w-auto" /> a safe and reliable
                   platform. With secure payments, user verification, and dedicated support, you can send and carry parcels with confidence.
                 </p>
                 <Button variant="link" asChild className="p-0 h-auto text-primary">
@@ -188,5 +188,3 @@ export default function Home() {
     </>
   );
 }
-
-    

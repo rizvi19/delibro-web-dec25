@@ -13,8 +13,6 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '../ui/skeleton';
-import Image from 'next/image';
-
 
 async function handleSignOut(router: any) {
   const supabase = createSupabaseClient();
@@ -135,7 +133,7 @@ export default function Header() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <NavLink href="/" className="text-lg" isBrand>
-          <Image src="/logo.png" alt="delibro logo" width={120} height={30} />
+           <img src="/logo.png" alt="delibro logo" className="h-[30px] w-auto" />
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -223,7 +221,7 @@ export default function Header() {
                         className="flex items-center gap-2 font-bold text-lg"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <Image src="/logo.png" alt="delibro logo" width={120} height={30} />
+                         <img src="/logo.png" alt="delibro logo" className="h-[30px] w-auto" />
                       </Link>
                     </div>
                     <nav className="flex-grow grid gap-2 text-lg font-medium p-4">
@@ -289,5 +287,3 @@ const navLinks = [
   { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
   { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
 ];
-
-    
