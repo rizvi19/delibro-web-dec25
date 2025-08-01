@@ -96,7 +96,11 @@ export default function HelplineChat() {
           </CardHeader>
           <CardContent className="flex-1 p-4 overflow-y-auto">
             <div className="space-y-4">
-              {messages.map((message, index) => (
+              {messages.map((message, index) => {
+                 const showLogo = message.role === 'bot' && message.content.toLowerCase().includes('delibro');
+                 const cleanContent = message.content.replace(/delibro/gi, '').trim();
+
+                return (
                 <div
                   key={index}
                   className={cn('flex items-start gap-3', {
@@ -114,8 +118,8 @@ export default function HelplineChat() {
                       'bg-accent': message.role === 'bot',
                     })}
                   >
-                    <p className="text-sm">{message.content.replace(/delibro/g, '')}</p>
-                    {message.content.includes('delibro') && <Image src="/logo.png" alt="delibro logo" width={80} height={20} className="mt-1" />}
+                    <p className="text-sm">{cleanContent}</p>
+                     {showLogo && <Image src="/logo.png" alt="delibro logo" width={80} height={20} className="mt-2" />}
                   </div>
                    {message.role === 'user' && (
                     <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
@@ -123,7 +127,7 @@ export default function HelplineChat() {
                     </div>
                   )}
                 </div>
-              ))}
+              )})}
                {isLoading && (
                 <div className="flex items-start gap-3">
                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -156,3 +160,5 @@ export default function HelplineChat() {
     </>
   );
 }
+
+    
