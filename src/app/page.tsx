@@ -67,8 +67,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-grow">
+    <>
         {/* Hero Section */}
         <section className="relative bg-accent/50 w-full overflow-hidden">
             <div className="container mx-auto px-4 py-20 md:py-32">
@@ -186,14 +185,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-accent">
-        <div className="container mx-auto px-4 py-6 text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} delibro. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }

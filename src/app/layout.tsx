@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import HelplineChat from '@/components/helpline-chat';
+import Footer from '@/components/layout/footer';
 
 export const metadata: Metadata = {
   title: 'delibro',
@@ -29,8 +30,11 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <Header />
-        <main className="min-h-screen bg-background pt-16">{children}</main>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow min-h-screen bg-background pt-16">{children}</main>
+          <Footer />
+        </div>
         <Toaster />
         <HelplineChat />
       </body>
