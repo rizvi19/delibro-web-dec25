@@ -18,7 +18,7 @@ const prompt = ai.definePrompt({
   Your purpose is to answer user questions about how the delibro service works.
   delibro is a platform that connects travelers with people who need to send parcels.
   
-  Keep your answers concise, clear, and friendly.
+  Keep your answers concise, clear, and friendly. When you mention the app name, just say "delibro".
 
   User's question: {{{prompt}}}
 `,

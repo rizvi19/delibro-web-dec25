@@ -13,6 +13,7 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '../ui/skeleton';
+import Image from 'next/image';
 
 
 async function handleSignOut(router: any) {
@@ -129,13 +130,12 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background shadow-sm'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm'
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <NavLink href="/" className="text-lg" isBrand>
-          <Send className="h-6 w-6 text-primary" />
-          <span className="font-headline">delibro</span>
+          <Image src="/logo.png" alt="delibro logo" width={120} height={30} />
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -223,8 +223,7 @@ export default function Header() {
                         className="flex items-center gap-2 font-bold text-lg"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <Send className="h-6 w-6 text-primary" />
-                        <span className="font-headline">delibro</span>
+                        <Image src="/logo.png" alt="delibro logo" width={120} height={30} />
                       </Link>
                     </div>
                     <nav className="flex-grow grid gap-2 text-lg font-medium p-4">

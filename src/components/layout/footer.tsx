@@ -1,5 +1,6 @@
 import { Send, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link href={href}>
@@ -49,8 +50,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-16">
         <div className="mb-12">
           <Link href="/" className="flex items-center gap-2 font-bold text-2xl font-headline">
-            <Send className="h-8 w-8 text-primary" />
-            delibro
+            <Image src="/logo.png" alt="delibro logo" width={150} height={40} />
           </Link>
         </div>
 
@@ -105,7 +105,7 @@ export default function Footer() {
             <SocialLink href="#" icon={Linkedin} />
           </div>
           <div className="text-center text-sm text-gray-400">
-            <p>&copy; {new Date().getFullYear()} delibro. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Delibro. All rights reserved.</p>
             <div className="flex gap-4 justify-center mt-2">
                 <FooterLink href="#">Privacy</FooterLink>
                 <FooterLink href="#">Accessibility</FooterLink>
