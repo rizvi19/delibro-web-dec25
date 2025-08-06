@@ -127,7 +127,7 @@ export default function SendParcelPage() {
               </div>
             </div>
              <div className="grid gap-2">
-              <Label>Parcel Image (Optional)</Label>
+              <Label>Parcel Image</Label>
               <div className="w-full p-4 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center">
                 {imagePreview ? (
                     <div className="relative w-full max-w-sm">
