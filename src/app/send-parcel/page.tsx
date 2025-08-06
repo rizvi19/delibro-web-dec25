@@ -12,13 +12,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Box, Loader2 } from 'lucide-react';
+import { Box, Loader2, Camera, Upload } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useRef, useActionState } from 'react';
+import { useEffect, useRef, useActionState, useState } from 'react';
 import { sendParcelAction, type ParcelFormState } from './actions';
 import { LocationCombobox } from '@/components/location-combobox';
-
+import Image from 'next/image';
+import { CameraView } from '@/components/camera-view';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -33,6 +34,11 @@ function SubmitButton() {
 export default function SendParcelPage() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+
 
   const initialState: ParcelFormState = {
     success: false,
@@ -51,9 +57,30 @@ export default function SendParcelPage() {
       });
       if (state.success) {
         formRef.current?.reset();
+        setImagePreview(null);
       }
     }
   }, [state, toast]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePhotoTaken = (dataUri: string) => {
+    setImagePreview(dataUri);
+    setShowCamera(false);
+  }
+
+  if (showCamera) {
+      return <CameraView onPhotoTaken={handlePhotoTaken} onBack={() => setShowCamera(false)} />
+  }
 
 
   return (
@@ -90,7 +117,7 @@ export default function SendParcelPage() {
             <div className="grid md:grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="parcelWeight">Weight (kg)</Label>
-                <Input name="parcelWeight" id="parcelWeight" type="number" placeholder="e.g., 2.5" required />
+                <Input name="parcelWeight" id="parcelWeight" type="number" placeholder="e.g., 2.5" required step="0.1" />
                 {state.errors?.parcelWeight && <p className="text-sm font-medium text-destructive">{state.errors.parcelWeight[0]}</p>}
               </div>
               <div className="grid gap-2">
@@ -98,6 +125,39 @@ export default function SendParcelPage() {
                 <Input name="deliveryDate" id="deliveryDate" type="date" required />
                 {state.errors?.deliveryDate && <p className="text-sm font-medium text-destructive">{state.errors.deliveryDate[0]}</p>}
               </div>
+            </div>
+             <div className="grid gap-2">
+              <Label>Parcel Image (Optional)</Label>
+              <div className="w-full p-4 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center">
+                {imagePreview ? (
+                    <div className="relative w-full max-w-sm">
+                      <Image
+                        src={imagePreview}
+                        alt="Parcel preview"
+                        width={400}
+                        height={300}
+                        className="rounded-md object-cover"
+                      />
+                       <Button variant="destructive" size="sm" className="absolute top-2 right-2" onClick={() => setImagePreview(null)}>Remove</Button>
+                    </div>
+                ) : (
+                  <div className='flex flex-col items-center gap-4'>
+                    <p className="text-sm text-muted-foreground">Add a photo of your parcel.</p>
+                    <div className="flex gap-4">
+                       <Button type="button" onClick={() => setShowCamera(true)}>
+                         <Camera className="mr-2 h-4 w-4" />
+                         Take Photo
+                       </Button>
+                       <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}>
+                         <Upload className="mr-2 h-4 w-4" />
+                         Upload File
+                       </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+               <Input type="file" name="parcelImage" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+               {imagePreview && <input type="hidden" name="parcelImageData" value={imagePreview} />}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="notes">Special Instructions (Optional)</Label>
