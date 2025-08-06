@@ -215,7 +215,7 @@ export default function Header() {
                 </SheetTrigger>
                 <SheetContent side="right" className="p-0">
                   <SheetHeader className="p-4 border-b">
-                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                     <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                      <Link
                         href="/"
                         className="flex items-center gap-2 font-bold text-lg"

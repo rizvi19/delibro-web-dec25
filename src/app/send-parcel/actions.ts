@@ -1,9 +1,8 @@
 'use server';
 
-import { createServerClient } from '@supabase/ssr';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const parcelSchema = z.object({
   origin: z.string().min(1, 'Origin is required.'),
@@ -26,24 +25,7 @@ export async function sendParcelAction(
   prevState: ParcelFormState,
   formData: FormData
 ): Promise<ParcelFormState> {
-   const cookieStore = cookies();
-   const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-          set(name: string, value: string, options: any) {
-            cookieStore.set({ name, value, ...options })
-          },
-          remove(name: string, options: any) {
-            cookieStore.set({ name, value: '', ...options })
-          },
-        },
-      }
-    );
+   const supabase = createSupabaseServerClient();
 
   const {
     data: { user },
