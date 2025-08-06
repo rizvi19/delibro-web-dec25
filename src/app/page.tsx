@@ -82,11 +82,11 @@ export default function Home() {
                  <div className="hidden md:block">
                      <Image
                         src="https://placehold.co/600x400.png"
-                        alt="Parcel Delivery"
+                        alt="Student handing over a parcel near a train station"
                         width={600}
                         height={400}
-                        className="rounded-lg shadow-xl"
-                        data-ai-hint="delivery package"
+                        className="rounded-lg"
+                        data-ai-hint="parcel delivery student"
                         />
                 </div>
             </div>
@@ -188,7 +188,7 @@ export default function Home() {
                 alt="Trust and Safety"
                 width={600}
                 height={400}
-                className="rounded-lg shadow-xl"
+                className="rounded-lg"
                 data-ai-hint="security handshake"
               />
             </div>

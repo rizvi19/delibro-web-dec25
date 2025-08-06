@@ -54,15 +54,15 @@ export function PriceCalculator() {
 
 
     return (
-        <Card className="p-6 bg-card/80 backdrop-blur-sm shadow-2xl border">
+        <Card className="p-6 bg-card/80 backdrop-blur-sm border-0 shadow-none">
             <div className="grid gap-4">
-                 <div className="grid md:grid-cols-2 gap-4">
+                 <div className="grid md:grid-cols-1 gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="origin">From</Label>
+                        <Label htmlFor="origin">Pick-up Location</Label>
                         <LocationCombobox name="origin" onValueChange={setOrigin} />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="destination">To</Label>
+                        <Label htmlFor="destination">Delivery Location</Label>
                         <LocationCombobox name="destination" onValueChange={setDestination} />
                     </div>
                 </div>
