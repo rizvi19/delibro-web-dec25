@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { BaggageClaim, ArrowRight, Box, Ship } from 'lucide-react';
+import { ArrowRight, Box, Ship } from 'lucide-react';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
@@ -15,6 +15,12 @@ export default async function DashboardPage() {
         cookies: {
           get(name: string) {
             return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options })
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options })
           },
         },
       }
