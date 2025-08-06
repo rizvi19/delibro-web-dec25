@@ -88,9 +88,24 @@ const districts = [
     { value: "thakurgaon", label: "Thakurgaon" },
 ];
 
-export function LocationCombobox({ name }: { name: string }) {
+type LocationComboboxProps = {
+  name: string;
+  onValueChange?: (value: string) => void;
+};
+
+
+export function LocationCombobox({ name, onValueChange }: LocationComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+
+  const handleSelect = (currentValue: string) => {
+    const newValue = currentValue === value ? "" : currentValue;
+    setValue(newValue);
+    if(onValueChange) {
+      onValueChange(newValue);
+    }
+    setOpen(false);
+  }
 
   return (
     <>
@@ -119,10 +134,7 @@ export function LocationCombobox({ name }: { name: string }) {
                 <CommandItem
                   key={district.value}
                   value={district.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
+                  onSelect={handleSelect}
                 >
                   <Check
                     className={cn(
