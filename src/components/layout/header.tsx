@@ -2,7 +2,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Ship, Send, PackageSearch, Home as HomeIcon, LogOut, User as UserIcon, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -214,16 +214,17 @@ export default function Header() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="p-0">
-                  <div className="flex flex-col h-full">
-                    <div className="border-b p-4">
-                      <Link
+                  <SheetHeader className="p-4 border-b">
+                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                     <Link
                         href="/"
                         className="flex items-center gap-2 font-bold text-lg"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                          <img src="/logo.png" alt="delibro logo" className="h-[30px] w-auto" />
                       </Link>
-                    </div>
+                  </SheetHeader>
+                  <div className="flex flex-col h-full">
                     <nav className="flex-grow grid gap-2 text-lg font-medium p-4">
                       {navLinks.map((link) => (
                         <MobileNavLink key={link.href} {...link} />
@@ -285,5 +286,5 @@ const navLinks = [
   { href: '/', label: 'Home', icon: HomeIcon },
   { href: '/post-trip', label: 'Post a Trip', icon: Ship },
   { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
-  { href: '/dashboard', label: 'Dashboard', icon: PackageSearch },
+  { href: '/track', label: 'Track', icon: PackageSearch },
 ];
