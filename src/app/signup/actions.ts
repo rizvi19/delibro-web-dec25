@@ -17,7 +17,7 @@ export type SignupFormState = {
 }
 
 export async function signup(prevState: SignupFormState, formData: FormData): Promise<SignupFormState> {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseServerClient();
 
   const validatedFields = signupSchema.safeParse({
     name: formData.get('name'),
