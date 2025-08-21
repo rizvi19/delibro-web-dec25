@@ -2,6 +2,10 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+<<<<<<< HEAD
+=======
+import { redirect } from 'next/navigation'
+>>>>>>> cf5971e (signup login backend)
 import { z } from 'zod'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
@@ -18,7 +22,11 @@ export type SignupFormState = {
 }
 
 export async function signup(prevState: SignupFormState, formData: FormData): Promise<SignupFormState> {
+<<<<<<< HEAD
   const supabase = createSupabaseServerClient();
+=======
+  const supabase = await createSupabaseServerClient();
+>>>>>>> cf5971e (signup login backend)
 
   const validatedFields = signupSchema.safeParse({
     name: formData.get('name'),
@@ -36,7 +44,11 @@ export async function signup(prevState: SignupFormState, formData: FormData): Pr
 
   const { name, email, phone, password } = validatedFields.data
 
+<<<<<<< HEAD
   const { error } = await supabase.auth.signUp({
+=======
+  const { data, error } = await supabase.auth.signUp({
+>>>>>>> cf5971e (signup login backend)
     email,
     password,
     options: {
@@ -54,8 +66,28 @@ export async function signup(prevState: SignupFormState, formData: FormData): Pr
     }
   }
 
+<<<<<<< HEAD
   revalidatePath('/', 'layout')
 
+=======
+  // If signup was successful and user is immediately confirmed (no email verification needed)
+  if (data.user && !data.user.email_confirmed_at) {
+    revalidatePath('/', 'layout')
+    return {
+      success: true,
+      message: 'Signed up successfully! Please check your email to verify your account.',
+    }
+  } else if (data.user && data.user.email_confirmed_at) {
+    // User is immediately confirmed, redirect to dashboard
+    revalidatePath('/', 'layout')
+    return {
+      success: true,
+      message: 'Signed up successfully! Welcome to delibro.',
+    }
+  }
+
+  revalidatePath('/', 'layout')
+>>>>>>> cf5971e (signup login backend)
   return {
     success: true,
     message: 'Signed up successfully! Please check your email to verify your account.',

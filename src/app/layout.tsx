@@ -4,6 +4,10 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import HelplineChat from '@/components/helpline-chat';
 import Footer from '@/components/layout/footer';
+<<<<<<< HEAD
+=======
+import { AuthProvider } from '@/components/auth-provider';
+>>>>>>> cf5971e (signup login backend)
 
 export const metadata: Metadata = {
   title: 'delibro',
@@ -30,6 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
+<<<<<<< HEAD
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow min-h-screen bg-background pt-16">{children}</main>
@@ -37,6 +42,17 @@ export default function RootLayout({
         </div>
         <Toaster />
         <HelplineChat />
+=======
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow min-h-screen bg-background pt-16">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+          <HelplineChat />
+        </AuthProvider>
+>>>>>>> cf5971e (signup login backend)
       </body>
     </html>
   );

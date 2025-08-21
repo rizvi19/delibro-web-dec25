@@ -7,7 +7,11 @@ import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export default async function DashboardPage() {
+<<<<<<< HEAD
     const supabase = createSupabaseServerClient();
+=======
+    const supabase = await createSupabaseServerClient();
+>>>>>>> cf5971e (signup login backend)
 
     const {
         data: { user },

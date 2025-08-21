@@ -8,9 +8,23 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+<<<<<<< HEAD
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+=======
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Missing Supabase environment variables')
+    return response
+  }
+
+  const supabase = createServerClient(
+    supabaseUrl,
+    supabaseAnonKey,
+>>>>>>> cf5971e (signup login backend)
     {
       cookies: {
         get(name: string) {
@@ -54,7 +68,29 @@ export async function middleware(request: NextRequest) {
     }
   )
 
+<<<<<<< HEAD
   await supabase.auth.getUser()
+=======
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // Define protected routes
+  const protectedRoutes = ['/dashboard', '/send-parcel', '/track', '/post-trip', '/ai-assistant']
+  const authRoutes = ['/login', '/signup']
+  
+  const { pathname } = request.nextUrl
+
+  // Redirect authenticated users away from auth pages
+  if (user && authRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Redirect unauthenticated users to login for protected routes
+  if (!user && protectedRoutes.some(route => pathname.startsWith(route))) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+>>>>>>> cf5971e (signup login backend)
 
   return response
 }
