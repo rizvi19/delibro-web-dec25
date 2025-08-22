@@ -50,7 +50,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-16">
         <div className="mb-12">
           <Link href="/" className="flex items-center gap-2 font-bold text-2xl font-headline">
-            <img src="/logo.png" alt="delibro logo" className="h-[40px] w-auto" />
+            <img src="/delibro.png" alt="delibro logo" className="h-[40px] w-auto" />
           </Link>
         </div>
 

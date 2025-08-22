@@ -91,10 +91,11 @@ const districts = [
 type LocationComboboxProps = {
   name: string;
   onValueChange?: (value: string) => void;
+  placeholder?: string;
 };
 
 
-export function LocationCombobox({ name, onValueChange }: LocationComboboxProps) {
+export function LocationCombobox({ name, onValueChange, placeholder = "Select district..." }: LocationComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
 
@@ -116,11 +117,11 @@ export function LocationCombobox({ name, onValueChange }: LocationComboboxProps)
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full h-12 justify-between border-2 border-orange-400 rounded-lg bg-white/90 hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500 text-left font-normal"
         >
           {value
             ? districts.find((district) => district.value === value)?.label
-            : "Select district..."}
+            : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

@@ -54,23 +54,18 @@ export function PriceCalculator() {
 
 
     return (
-        <Card className="p-6 bg-card/80 backdrop-blur-sm border-0 shadow-none">
-            <div className="grid gap-4">
-                 <div className="grid md:grid-cols-1 gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="origin">Pick-up Location</Label>
-                        <LocationCombobox name="origin" onValueChange={setOrigin} />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="destination">Delivery Location</Label>
-                        <LocationCombobox name="destination" onValueChange={setDestination} />
-                    </div>
+        <div className="space-y-4">
+            <div className="space-y-4">
+                <div className="space-y-2">
+                    <LocationCombobox name="origin" onValueChange={setOrigin} placeholder="Pick-up Location" />
                 </div>
-                 <div className="grid gap-2">
-                    <Label htmlFor="parcel-size">Parcel Size</Label>
+                <div className="space-y-2">
+                    <LocationCombobox name="destination" onValueChange={setDestination} placeholder="Delivery Location" />
+                </div>
+                <div className="space-y-2">
                     <Select onValueChange={setSize} defaultValue={size} name="parcel-size">
-                        <SelectTrigger id="parcel-size">
-                            <SelectValue placeholder="Select parcel size" />
+                        <SelectTrigger className="w-full h-12 border-2 border-orange-400 rounded-lg bg-white/90 hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500">
+                            <SelectValue placeholder="Parcel Size" />
                         </SelectTrigger>
                         <SelectContent>
                             {parcelSizes.map((s) => (
@@ -78,14 +73,21 @@ export function PriceCalculator() {
                             ))}
                         </SelectContent>
                     </Select>
-                 </div>
-                <Button onClick={calculatePrice} size="lg">See Prices</Button>
+                </div>
+                <Button onClick={calculatePrice} className="w-auto px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg">
+                    See Prices
+                </Button>
+            </div>
 
                 {error && (
-                     <Alert variant="destructive">
-                        <Info className="h-4 w-4" />
-                        <AlertTitle>Error</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
+                     <Alert 
+                        variant="destructive" 
+                        className="bg-red-50 border-2 border-red-300 shadow-lg cursor-pointer hover:bg-red-100 transition-colors"
+                        onClick={() => setError('')}
+                     >
+                        <Info className="h-4 w-4 text-red-600" />
+                        <AlertTitle className="text-red-800 font-semibold">Error</AlertTitle>
+                        <AlertDescription className="text-red-700">{error}</AlertDescription>
                     </Alert>
                 )}
 
@@ -101,7 +103,6 @@ export function PriceCalculator() {
                         </Button>
                     </div>
                 )}
-            </div>
-        </Card>
+        </div>
     )
 }

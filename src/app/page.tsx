@@ -70,47 +70,53 @@ export default function Home() {
   return (
     <>
       {/* New Hero Section with Price Calculator */}
-      <section className="relative bg-background w-full overflow-hidden">
-        <div className="container mx-auto px-4 py-16 md:py-24">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="text-left">
-                    <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight text-foreground mb-8">
+      <section className="relative w-full overflow-hidden" style={{
+        backgroundImage: 'url(/pahar.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center -100px',
+        backgroundRepeat: 'no-repeat',
+        width: '100%',
+        height: '1024px',
+        aspectRatio: '1440/1024'
+      }}>
+        <div className="container mx-auto px-4 py-8 md:py-12 h-full">
+            <div className="grid md:grid-cols-2 gap-12 items-start h-full">
+                <div className="text-left mt-8 md:mt-12">
+                    <h1 className="text-[42px] font-semibold tracking-tight text-gray-900 mb-8" style={{ fontFamily: 'Inter, sans-serif' }}>
                        Get Your Parcel Delivered, On the Go.
                     </h1>
                    <PriceCalculator />
                 </div>
-                 <div className="hidden md:block">
-                     <Image
-                        src="https://placehold.co/600x400.png"
-                        alt="Student handing over a parcel near a train station"
-                        width={600}
-                        height={400}
-                        className="rounded-lg"
-                        data-ai-hint="parcel delivery student"
-                        />
+                <div className="hidden md:block">
+                    {/* Right side is part of the background illustration */}
                 </div>
             </div>
         </div>
-      </section>
-
-      {/* Original Hero Section - Repurposed */}
-      <section className="relative bg-accent/50 w-full overflow-hidden">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="grid md:grid-cols-1 gap-8 items-center">
-            <div className="text-center md:text-left">
-              <h1 className="text-3xl md:text-4xl font-bold font-headline tracking-tight text-foreground mb-4">
+      </section>{/* Original Hero Section - Repurposed */}<section className="relative w-full overflow-hidden" style={{
+        backgroundImage: 'url(/rasta.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'no-repeat',
+        width: '100%',
+        height: '780px',
+        marginTop: '-50px'
+      }}>
+        <div className="container mx-auto px-4 pt-16 md:pt-24 h-full">
+          <div className="grid md:grid-cols-1 gap-8 items-start h-full">
+            <div className="text-center md:text-right mt-8 md:mt-16">
+              <h1 className="text-[42px] font-semibold tracking-tight text-white mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>
                 Ship Smarter, Travel Further
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-8">
-                <img src="/logo.png" alt="delibro logo" className="inline-block mr-2 -mt-1 h-[25px] w-auto"/> connects travelers with individuals who need to send parcels. Turn your extra luggage space into cash or get your items delivered with speed and care.
+              <p className="text-lg md:text-xl text-white/90 max-w-xl mx-auto md:ml-auto md:mr-0 mb-8">
+                Delibro connects travelers with individuals who need to send parcels. Turn your extra luggage space into cash or get your items delivered with speed and care.
               </p>
-              <div className="flex justify-center md:justify-start gap-4 flex-wrap">
-                <Button asChild size="lg" className="font-semibold">
+              <div className="flex justify-center md:justify-end gap-4 flex-wrap">
+                <Button asChild size="lg" className="font-semibold bg-orange-500 hover:bg-orange-600">
                   <Link href="/send-parcel">
                     Send a Parcel <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="font-semibold border border-primary">
+                <Button asChild size="lg" variant="outline" className="font-semibold border-2 border-orange-500 text-orange-500 bg-white hover:bg-orange-50 hover:border-orange-600 hover:text-orange-600">
                   <Link href="/post-trip">
                     Become a Traveler
                   </Link>
@@ -120,12 +126,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 md:py-24 bg-background">
+      <section id="how-it-works" className="py-16 md:py-24 bg-background -mt-1">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline">
+            <h2 className="text-[42px] font-semibold" style={{ fontFamily: 'Inter, sans-serif' }}>
               How It Works
             </h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
@@ -154,8 +159,8 @@ export default function Home() {
       <section id="features" className="py-16 md:py-24 bg-accent">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center justify-center gap-2">
-              Why Choose <img src="/logo.png" alt="delibro logo" className="h-[35px] w-auto" />?
+            <h2 className="text-[42px] font-semibold flex items-center justify-center gap-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+              Why Choose <img src="/delibro.png" alt="delibro logo" className="h-[35px] w-auto" />?
             </h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
               We provide features that make your life easier and your
@@ -184,21 +189,20 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2">
               <Image
-                src="https://placehold.co/600x400.png"
+                src="/last.png"
                 alt="Trust and Safety"
                 width={600}
                 height={400}
                 className="rounded-lg"
-                data-ai-hint="security handshake"
               />
             </div>
             <div className="w-full md:w-1/2">
               <ShieldCheck className="h-12 w-12 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl font-bold font-headline mb-4">
+              <h2 className="text-[42px] font-semibold mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>
                 Your Trust, Our Priority
               </h2>
               <p className="text-muted-foreground text-lg mb-6">
-                We are committed to making <img src="/logo.png" alt="delibro logo" className="inline-block -mt-1 h-[25px] w-auto" /> a safe and reliable
+                We are committed to making <img src="/delibro.png" alt="delibro logo" className="inline-block -mt-1 h-[25px] w-auto" /> a safe and reliable
                 platform. With secure payments, user verification, and dedicated support, you can send and carry parcels with confidence.
               </p>
               <Button variant="link" asChild className="p-0 h-auto text-primary">
