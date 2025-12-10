@@ -7,6 +7,7 @@ const signupSchema = z.object({
   email: z.string().email('Invalid email address.'),
   phone: z.string().min(10, 'Phone number must be at least 10 digits.'),
   password: z.string().min(6, 'Password must be at least 6 characters.'),
+  role: z.enum(['sender','traveler']).default('sender'),
 })
 
 export async function POST(request: NextRequest) {
@@ -27,10 +28,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { name, email, phone, password } = validatedFields.data
+    const { name, email, phone, password, role } = validatedFields.data
     const supabase = await createSupabaseServerClient()
 
     // Sign up user
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -38,7 +40,9 @@ export async function POST(request: NextRequest) {
         data: {
           name: name,
           phone: phone,
+          role: role,
         },
+        emailRedirectTo: `${siteUrl}/auth/callback`,
       },
     })
 
@@ -60,6 +64,7 @@ export async function POST(request: NextRequest) {
         email: data.user?.email,
         name: data.user?.user_metadata?.name,
         phone: data.user?.user_metadata?.phone,
+        role: data.user?.user_metadata?.role,
         email_confirmed: !!data.user?.email_confirmed_at
       }
     })

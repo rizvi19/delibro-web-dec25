@@ -62,6 +62,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
     return NextResponse.json({
       success: true,
       user: {
@@ -70,7 +76,8 @@ export async function GET(request: NextRequest) {
         name: user.user_metadata?.name,
         phone: user.user_metadata?.phone,
         email_confirmed: !!user.email_confirmed_at,
-        created_at: user.created_at
+        created_at: user.created_at,
+        role: profile?.role || null,
       }
     })
 

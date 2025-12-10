@@ -1,0 +1,582 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-123456789012",
+    "name": "Delibro Trip API - Complete Test Suite",
+    "description": "Complete API testing for Delibro post-trip functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:9002",
+      "type": "string"
+    },
+    {
+      "key": "tripId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "parcelId", 
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "requestId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set common headers",
+          "pm.request.headers.add({",
+          "    key: 'Content-Type',",
+          "    value: 'application/json'",
+          "});"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login to Get Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Go to this URL in browser to login and get session cookies"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trips Management",
+      "item": [
+        {
+          "name": "Get All Trips",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has trips array', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('trips');",
+                  "    pm.expect(responseJson.trips).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Save first trip ID for other requests",
+                  "if (pm.response.json().trips.length > 0) {",
+                  "    pm.collectionVariables.set('tripId', pm.response.json().trips[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE",
+                "description": "Copy cookies from browser after login"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"]
+            },
+            "description": "Browse all available trips"
+          }
+        },
+        {
+          "name": "Get User's Trips Only",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has trips array', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('trips');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?userOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "userOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only the current user's posted trips"
+          }
+        },
+        {
+          "name": "Search Trips by Location",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?origin=Dhaka&destination=Chittagong",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "Dhaka"
+                },
+                {
+                  "key": "destination", 
+                  "value": "Chittagong"
+                }
+              ]
+            },
+            "description": "Search trips by origin and destination"
+          }
+        },
+        {
+          "name": "Search Trips by Date",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips?date=2025-09-15",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-15"
+                }
+              ]
+            },
+            "description": "Search trips by travel date"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Parcels Management",
+      "item": [
+        {
+          "name": "Get All Parcels",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Save first parcel ID for other requests",
+                  "if (pm.response.json().parcels && pm.response.json().parcels.length > 0) {",
+                  "    pm.collectionVariables.set('parcelId', pm.response.json().parcels[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/parcels",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "parcels"]
+            },
+            "description": "Browse all parcel delivery requests"
+          }
+        },
+        {
+          "name": "Get User's Parcels Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/parcels?userOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "parcels"],
+              "query": [
+                {
+                  "key": "userOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only the current user's parcel requests"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trip Requests (Matching)",
+      "item": [
+        {
+          "name": "Create Trip Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Trip request created', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('tripRequest');",
+                  "    pm.expect(responseJson.tripRequest).to.have.property('id');",
+                  "});",
+                  "",
+                  "// Save request ID for other operations",
+                  "if (pm.response.json().tripRequest) {",
+                  "    pm.collectionVariables.set('requestId', pm.response.json().tripRequest.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tripId\": \"{{tripId}}\",\n  \"parcelId\": \"{{parcelId}}\",\n  \"message\": \"Hi! Can you please carry my parcel? It's just documents.\",\n  \"priceOffered\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests"]
+            },
+            "description": "Request a traveler to carry your parcel"
+          }
+        },
+        {
+          "name": "Get Received Trip Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests?type=received",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "received"
+                }
+              ]
+            },
+            "description": "Get trip requests you received (as a traveler)"
+          }
+        },
+        {
+          "name": "Get Sent Trip Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests?type=sent",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "sent"
+                }
+              ]
+            },
+            "description": "Get trip requests you sent (as a sender)"
+          }
+        },
+        {
+          "name": "Accept Trip Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Request accepted', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.success).to.be.true;",
+                  "    pm.expect(responseJson.status).to.equal('accepted');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests/{{requestId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests", "{{requestId}}"]
+            },
+            "description": "Accept a trip request (as traveler)"
+          }
+        },
+        {
+          "name": "Reject Trip Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests/{{requestId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests", "{{requestId}}"]
+            },
+            "description": "Reject a trip request (as traveler)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has notifications array', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('notifications');",
+                  "    pm.expect(responseJson.notifications).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"]
+            },
+            "description": "Get all user notifications"
+          }
+        },
+        {
+          "name": "Get Unread Notifications Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications?unreadOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                {
+                  "key": "unreadOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only unread notifications"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Testing",
+      "item": [
+        {
+          "name": "Unauthorized Request (No Cookies)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Error message is correct', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.error).to.equal('Unauthorized');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"]
+            },
+            "description": "Test unauthorized access (should fail)"
+          }
+        },
+        {
+          "name": "Invalid Trip Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400 or 404', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_BROWSER_COOKIES_HERE"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tripId\": \"invalid-uuid\",\n  \"parcelId\": \"invalid-uuid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trip-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trip-requests"]
+            },
+            "description": "Test with invalid UUIDs (should fail)"
+          }
+        }
+      ]
+    }
+  ]
+}

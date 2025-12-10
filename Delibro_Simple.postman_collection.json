@@ -1,0 +1,460 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Delibro API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Login Page (Open in Browser)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9002/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Open this URL in your browser to login and get session cookies"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚀 Trips",
+      "item": [
+        {
+          "name": "Get All Trips",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text",
+                "description": "Copy cookies from browser after login"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/trips",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trips"
+              ]
+            },
+            "description": "Get all available trips"
+          }
+        },
+        {
+          "name": "Get My Trips Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/trips?userOnly=true",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trips"
+              ],
+              "query": [
+                {
+                  "key": "userOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only your own trips"
+          }
+        },
+        {
+          "name": "Search Trips by Location",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/trips?origin=Dhaka&destination=Chittagong",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trips"
+              ],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "Dhaka"
+                },
+                {
+                  "key": "destination",
+                  "value": "Chittagong"
+                }
+              ]
+            },
+            "description": "Search trips by origin and destination"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Parcels",
+      "item": [
+        {
+          "name": "Get All Parcels",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/parcels",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "parcels"
+              ]
+            },
+            "description": "Get all parcel requests"
+          }
+        },
+        {
+          "name": "Get My Parcels Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/parcels?userOnly=true",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "parcels"
+              ],
+              "query": [
+                {
+                  "key": "userOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only your own parcels"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤝 Trip Requests",
+      "item": [
+        {
+          "name": "Create Trip Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tripId\": \"YOUR_TRIP_ID_HERE\",\n  \"parcelId\": \"YOUR_PARCEL_ID_HERE\",\n  \"message\": \"Hi! Can you please carry my parcel?\",\n  \"priceOffered\": 500\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9002/api/trip-requests",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trip-requests"
+              ]
+            },
+            "description": "Request a traveler to carry your parcel"
+          }
+        },
+        {
+          "name": "Get Requests I Received",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/trip-requests?type=received",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trip-requests"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "received"
+                }
+              ]
+            },
+            "description": "Get trip requests you received as a traveler"
+          }
+        },
+        {
+          "name": "Get Requests I Sent",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/trip-requests?type=sent",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trip-requests"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "sent"
+                }
+              ]
+            },
+            "description": "Get trip requests you sent as a sender"
+          }
+        },
+        {
+          "name": "Accept Trip Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9002/api/trip-requests/REQUEST_ID_HERE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trip-requests",
+                "REQUEST_ID_HERE"
+              ]
+            },
+            "description": "Accept a trip request (replace REQUEST_ID_HERE with actual ID)"
+          }
+        },
+        {
+          "name": "Reject Trip Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9002/api/trip-requests/REQUEST_ID_HERE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trip-requests",
+                "REQUEST_ID_HERE"
+              ]
+            },
+            "description": "Reject a trip request (replace REQUEST_ID_HERE with actual ID)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/notifications",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "notifications"
+              ]
+            },
+            "description": "Get all your notifications"
+          }
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "PASTE_YOUR_COOKIES_HERE",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9002/api/notifications?unreadOnly=true",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "unreadOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get only unread notifications"
+          }
+        }
+      ]
+    },
+    {
+      "name": "❌ Error Tests",
+      "item": [
+        {
+          "name": "Test Unauthorized (No Cookies)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9002/api/trips",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9002",
+              "path": [
+                "api",
+                "trips"
+              ]
+            },
+            "description": "This should return 401 Unauthorized error"
+          }
+        }
+      ]
+    }
+  ]
+}

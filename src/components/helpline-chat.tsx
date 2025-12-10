@@ -118,7 +118,7 @@ export default function HelplineChat() {
                     })}
                   >
                     <p className="text-sm">{cleanContent}</p>
-                     {showLogo && <img src="/logo.png" alt="delibro logo" className="mt-2 h-[20px] w-auto" />}
+                     {showLogo && <img src="/delibro.png" alt="delibro logo" className="mt-2 h-[20px] w-auto" />}
                   </div>
                    {message.role === 'user' && (
                     <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center flex-shrink-0">

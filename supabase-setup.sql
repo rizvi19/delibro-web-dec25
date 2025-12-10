@@ -6,6 +6,7 @@ CREATE TABLE profiles (
   name TEXT NOT NULL,
   phone TEXT,
   avatar_url TEXT,
+  role TEXT NOT NULL DEFAULT 'sender' CHECK (role IN ('sender','traveler','admin')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -27,11 +28,12 @@ CREATE POLICY "Users can insert own profile" ON profiles
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, name, phone)
+  INSERT INTO public.profiles (id, name, phone, role)
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'name', ''),
-    COALESCE(NEW.raw_user_meta_data->>'phone', '')
+    COALESCE(NEW.raw_user_meta_data->>'phone', ''),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'sender')
   );
   RETURN NEW;
 END;

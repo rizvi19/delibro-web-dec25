@@ -44,6 +44,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    let role: string | null = null
+    if (data.user?.id) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single()
+      role = profile?.role ?? null
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Login successful',
@@ -52,7 +62,8 @@ export async function POST(request: NextRequest) {
         email: data.user?.email,
         name: data.user?.user_metadata?.name,
         phone: data.user?.user_metadata?.phone,
-        email_confirmed: !!data.user?.email_confirmed_at
+        email_confirmed: !!data.user?.email_confirmed_at,
+        role,
       },
       session: {
         access_token: data.session?.access_token,

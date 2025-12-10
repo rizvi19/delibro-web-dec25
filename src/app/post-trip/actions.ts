@@ -4,6 +4,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { requireRole, requireKycApproved } from '@/lib/auth';
 
 
 // This is the same schema as in the page.tsx file.
@@ -43,6 +44,24 @@ export async function postTripAction(
       message: 'You must be logged in to post a trip.',
       errors: null,
     };
+  }
+
+  const gate = await requireRole(['traveler', 'admin'])
+  if (!gate.ok) {
+    return {
+      success: false,
+      message: gate.message || 'Only travelers can post trips.',
+      errors: null,
+    }
+  }
+
+  const kyc = await requireKycApproved()
+  if (!kyc.ok) {
+    return {
+      success: false,
+      message: kyc.message || 'KYC required to post trips.',
+      errors: null,
+    }
   }
 
 

@@ -73,6 +73,19 @@ export default function SignupPage() {
                             <Input id="phone" name="phone" type="tel" placeholder="e.g., 01712345678" required />
                         </div>
                         <div className="grid gap-2">
+                            <Label>Role</Label>
+                            <div className="flex gap-4">
+                                <label className="flex items-center gap-2 text-sm">
+                                    <input type="radio" name="role" value="sender" defaultChecked />
+                                    Sender
+                                </label>
+                                <label className="flex items-center gap-2 text-sm">
+                                    <input type="radio" name="role" value="traveler" />
+                                    Traveler
+                                </label>
+                            </div>
+                        </div>
+                        <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>

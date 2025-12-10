@@ -38,6 +38,11 @@ export default function SendParcelPage() {
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(false);
+  const [size, setSize] = useState<'small'|'medium'|'large'|'xl'>('medium');
+  const [pickupStart, setPickupStart] = useState('')
+  const [pickupEnd, setPickupEnd] = useState('')
+  const [deliveryStart, setDeliveryStart] = useState('')
+  const [deliveryEnd, setDeliveryEnd] = useState('')
 
 
   const initialState: ParcelFormState = {
@@ -126,7 +131,43 @@ export default function SendParcelPage() {
                 {state.errors?.deliveryDate && <p className="text-sm font-medium text-destructive">{state.errors.deliveryDate[0]}</p>}
               </div>
             </div>
-             <div className="grid gap-2">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="pickupStart">Pickup Window Start</Label>
+                <Input name="pickupStart" id="pickupStart" type="time" value={pickupStart} onChange={e=>setPickupStart(e.target.value)} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="pickupEnd">Pickup Window End</Label>
+                <Input name="pickupEnd" id="pickupEnd" type="time" value={pickupEnd} onChange={e=>setPickupEnd(e.target.value)} />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="deliveryStart">Delivery Window Start</Label>
+                <Input name="deliveryStart" id="deliveryStart" type="time" value={deliveryStart} onChange={e=>setDeliveryStart(e.target.value)} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="deliveryEnd">Delivery Window End</Label>
+                <Input name="deliveryEnd" id="deliveryEnd" type="time" value={deliveryEnd} onChange={e=>setDeliveryEnd(e.target.value)} />
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label>Parcel Size</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {[
+                  {key:'small', label:'Small'},
+                  {key:'medium', label:'Medium'},
+                  {key:'large', label:'Large'},
+                  {key:'xl', label:'XL'},
+                ].map(opt => (
+                  <label key={opt.key} className={`flex items-center justify-center border rounded-md py-2 cursor-pointer ${size===opt.key ? 'border-primary' : 'border-muted'}`}>
+                    <input type="radio" name="size" value={opt.key} className="hidden" onChange={() => setSize(opt.key as any)} defaultChecked={opt.key==='medium'} />
+                    <span className="text-sm">{opt.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-2">
               <Label>Parcel Image</Label>
               <div className="w-full p-4 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-center">
                 {imagePreview ? (
@@ -154,7 +195,7 @@ export default function SendParcelPage() {
                        </Button>
                     </div>
                   </div>
-                )}
+               )}
               </div>
                <Input type="file" name="parcelImage" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                {imagePreview && <input type="hidden" name="parcelImageData" value={imagePreview} />}

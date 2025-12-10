@@ -16,11 +16,7 @@ export type LoginFormState = {
 }
 
 export async function login(prevState: LoginFormState, formData: FormData): Promise<LoginFormState> {
-<<<<<<< HEAD
   const supabase = createSupabaseServerClient();
-=======
-  const supabase = await createSupabaseServerClient();
->>>>>>> cf5971e (signup login backend)
 
   const validatedFields = loginSchema.safeParse({
     email: formData.get('email'),

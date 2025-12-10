@@ -133,11 +133,7 @@ export default function Header() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <NavLink href="/" className="text-lg" isBrand>
-<<<<<<< HEAD
-           <img src="/logo.png" alt="delibro logo" className="h-[30px] w-auto" />
-=======
            <img src="/delibro.png" alt="delibro logo" className="h-[30px] w-auto" />
->>>>>>> cf5971e (signup login backend)
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -225,11 +221,7 @@ export default function Header() {
                         className="flex items-center gap-2 font-bold text-lg"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-<<<<<<< HEAD
-                         <img src="/logo.png" alt="delibro logo" className="h-[30px] w-auto" />
-=======
                          <img src="/delibro.png" alt="delibro logo" className="h-[30px] w-auto" />
->>>>>>> cf5971e (signup login backend)
                       </Link>
                   </SheetHeader>
                   <div className="flex flex-col h-full">
@@ -292,7 +284,9 @@ export default function Header() {
 
 const navLinks = [
   { href: '/', label: 'Home', icon: HomeIcon },
+  { href: '/trips', label: 'Browse Trips', icon: Ship },
+  { href: '/parcels', label: 'Open Requests', icon: PackageSearch },
   { href: '/post-trip', label: 'Post a Trip', icon: Ship },
   { href: '/send-parcel', label: 'Send a Parcel', icon: Send },
-  { href: '/track', label: 'Track', icon: PackageSearch },
+  { href: '/wallet', label: 'Wallet', icon: PackageSearch },
 ];
